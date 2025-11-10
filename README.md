@@ -9,6 +9,10 @@
 [![Fastify](https://img.shields.io/badge/Fastify-4.x-black)](https://fastify.dev)
 [![OpenRouter](https://img.shields.io/badge/OpenRouter-API-purple)](https://openrouter.ai)
 
+**Developed by Ayan Sayyad**
+
+🔗 **[Live Demo](https://mutlimodel-ai-api.onrender.com/docs)**
+
 [Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-api-documentation) • [Deployment](#-deployment)
 
 </div>
@@ -20,6 +24,19 @@
 A production-ready AI API that intelligently routes requests to optimal models based on automatic intent detection. Built with **Fastify** for maximum performance, supports **streaming and non-streaming** responses, and includes comprehensive **health monitoring** with circuit breaker patterns.
 
 Perfect for developers who want a unified AI interface without manually selecting models for each request.
+
+## 🎮 Try It Now
+
+**Live Testing Environment**: [https://mutlimodel-ai-api.onrender.com/docs](https://mutlimodel-ai-api.onrender.com/docs)
+
+Test the API directly in your browser with our interactive documentation interface!
+
+Quick test via cURL
+curl -X POST https://mutlimodel-ai-api.onrender.com/api/chat
+-H "Content-Type: application/json"
+-d '{"prompt": "Write a hello world in Python"}'
+
+text
 
 ## ✨ Features
 
@@ -109,10 +126,9 @@ text
 
 ## 📚 API Documentation
 
-### Base URL
-http://localhost:3000
-
-text
+### Base URLs
+- **Production**: `https://mutlimodel-ai-api.onrender.com`
+- **Local**: `http://localhost:3000`
 
 ### Endpoints
 
@@ -130,7 +146,7 @@ text
 
 #### Non-Streaming Chat
 
-curl -X POST http://localhost:3000/api/chat
+curl -X POST https://mutlimodel-ai-api.onrender.com/api/chat
 -H "Content-Type: application/json"
 -d '{
 "prompt": "Explain async/await in JavaScript"
@@ -154,28 +170,9 @@ text
 
 text
 
-#### Streaming Chat
-
-curl -N -X POST http://localhost:3000/api/chat/stream
--H "Content-Type: application/json"
--d '{"prompt": "Tell me a story"}'
-
-text
-
-**Response (SSE Stream):**
-data: {"model":"minimax/minimax-m2:free","intent":"creative"}
-
-data: {"content":"Once"}
-data: {"content":" upon"}
-data: {"content":" a"}
-data: {"content":" time"}
-data: [DONE]
-
-text
-
 #### JavaScript Example
 
-const response = await fetch('http://localhost:3000/api/chat', {
+const response = await fetch('https://mutlimodel-ai-api.onrender.com/api/chat', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({
@@ -192,7 +189,7 @@ text
 
 import requests
 
-response = requests.post('http://localhost:3000/api/chat',
+response = requests.post('https://mutlimodel-ai-api.onrender.com/api/chat',
 json={'prompt': 'What is machine learning?'}
 )
 
@@ -213,19 +210,9 @@ The API automatically detects intent and routes to optimal models:
 | **Creative** | story, poem, creative, write, imagine | MiniMax-M2, Llama-3.3 |
 | **General** | Everything else | Llama-3.3, DeepSeek-R1 |
 
-### How It Works
-
-1. **Prompt Analysis** - Extracts keywords from user input
-2. **Weighted Scoring** - High-priority keywords score 3x, medium 2x
-3. **Intent Selection** - Chooses highest-scoring category
-4. **Model Routing** - Selects best healthy model for intent
-5. **Response Generation** - Returns result with metadata
-
 ## ⚙️ Configuration
 
 ### Environment Variables
-
-Create a `.env` file:
 
 Required
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
@@ -240,22 +227,6 @@ APP_URL=http://localhost:3000
 APP_NAME=Advanced-AI-API
 
 text
-
-### Selection Strategies
-
-- **`health-aware-round-robin`** (default) - Weighted by health & performance
-- **`priority`** - Always uses highest-priority healthy model
-- **`round-robin`** - Simple rotation across healthy models
-
-### Memory Configuration
-
-The API auto-configures based on available RAM:
-
-| RAM | Workers | Queue Size | Max Concurrent |
-|-----|---------|------------|----------------|
-| 512MB | 2 | 50 | 5 |
-| 1GB | 4 | 100 | 10 |
-| 2GB+ | 4 | 100 | 10 |
 
 ## 🤖 Available Models
 
@@ -285,160 +256,61 @@ All models are **100% FREE** via OpenRouter:
 
 ## 🐳 Deployment
 
+### Render (Recommended)
+
+1. Push code to GitHub
+2. Create new Web Service on Render
+3. Add `OPENROUTER_API_KEY` environment variable
+4. Deploy with: `node server.js`
+
 ### Docker
 
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY server.js ./
-ENV NODE_ENV=production
-EXPOSE 3000
-CMD ["node", "--max-old-space-size=512", "server.js"]
-
-text
-undefined
 docker build -t ai-api .
 docker run -d -p 3000:3000
 -e OPENROUTER_API_KEY=your_key
--e MEMORY_LIMIT_MB=512
 --name ai-api ai-api
 
 text
-
-### Render / Railway / Heroku
-
-1. Push code to GitHub
-2. Connect repository to platform
-3. Add `OPENROUTER_API_KEY` environment variable
-4. Deploy (auto-configured)
-
-### PM2 (Production)
-
-npm install -g pm2
-npm run pm2:start
-
-Monitor
-pm2 monit
-
-View logs
-pm2 logs
-
-Restart
-pm2 restart ai-api
-
-text
-
-## 🛡️ Error Handling
-
-### Circuit Breaker
-Models automatically disable after **3 consecutive failures** and re-enable after **5 minutes**.
-
-### Backpressure
-When queue is full, returns **HTTP 429** with retry-after header:
-
-{
-"error": "Server overloaded. Retry after 5s",
-"retryAfter": 5
-}
-
-text
-
-### Automatic Retries
-Failed requests retry up to **2 times** with exponential backoff (1s, 2s delays).
 
 ## 🔍 Monitoring
 
 ### Health Check
 
-curl http://localhost:3000/health
-
-text
-undefined
-{
-"status": "ok",
-"pid": 12345,
-"memory": "245MB",
-"uptime": "3600s",
-"queue": {
-"queued": 0,
-"processing": 2,
-"rejected": 0
-},
-"models": {
-"qwen/qwen-2.5-coder-32b-instruct:free": {
-"successRate": "98.50%",
-"avgResponseTime": "1250ms",
-"isHealthy": true,
-"circuitBreaker": "CLOSED"
-}
-}
-}
-
-text
-
-### Performance Stats
-
-curl http://localhost:3000/api/stats
+curl https://mutlimodel-ai-api.onrender.com/health
 
 text
 
 ## 🐛 Troubleshooting
-
-### Common Issues
 
 **"API Error: 401"**
 - ✅ Verify `OPENROUTER_API_KEY` is correct
 - ✅ Check credits at openrouter.ai dashboard
 
 **"Server overloaded" (429)**
-- ✅ Increase `MEMORY_LIMIT_MB`
-- ✅ Add more workers (upgrade RAM)
-- ✅ Implement request caching
-
-**High Memory Usage**
-- ✅ Reduce concurrent requests in code
-- ✅ Use smaller models
-- ✅ Enable `--expose-gc` flag
-
-**Circuit Breaker Open**
-- ✅ Check `/health` for failing models
-- ✅ Wait 5 minutes for auto-recovery
-- ✅ Verify OpenRouter service status
+- ✅ Wait a few seconds and retry
+- ✅ Implement exponential backoff
 
 ## 📝 License
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
+## 👨‍💻 Developer
 
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing`)
-5. Open Pull Request
-
-## 🔗 Resources
-
-- [OpenRouter Documentation](https://openrouter.ai/docs)
-- [Fastify Documentation](https://fastify.dev)
-- [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
-- [PM2 Process Manager](https://pm2.keymetrics.io)
+**Ayan Sayyad**
 
 ## 💬 Support
 
-- 🐛 **Bug Reports:** [Open an issue](https://github.com/yourusername/repo/issues)
-- 💡 **Feature Requests:** [Start a discussion](https://github.com/yourusername/repo/discussions)
-- 📧 **Email:** your-email@example.com
-- 💬 **Discord:** [OpenRouter Community](https://discord.gg/openrouter)
+- 🐛 **Bug Reports:** Open an issue
+- 💡 **Feature Requests:** Start a discussion
+- 🌐 **Live Demo:** [https://mutlimodel-ai-api.onrender.com/docs](https://mutlimodel-ai-api.onrender.com/docs)
 
 ---
 
 <div align="center">
 
 **Built with ⚡ Fastify • 🤖 OpenRouter • 🚀 Node.js**
+
+**Developed by Ayan Sayyad**
 
 ⭐ Star this repo if you find it helpful!
 
