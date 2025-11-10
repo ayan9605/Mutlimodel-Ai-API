@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ai-api
+    runtime: node
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MEMORY_LIMIT_MB
+        value: 512
+      - key: OPENROUTER_API_KEY
+        sync: false
