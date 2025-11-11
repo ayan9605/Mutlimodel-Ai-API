@@ -11,7 +11,7 @@ const CONFIG = {
   HOST: process.env.HOST || '0.0.0.0',
   OPENROUTER_KEY: process.env.OPENROUTER_API_KEY,
   OPENROUTER_URL: 'https://openrouter.ai/api/v1/chat/completions',
-  APP_URL: process.env.APP_URL || 'http://localhost:3000',
+  APP_URL: process.env.APP_URL || 'https://mutlimodel-ai-api.onrender.com',
   APP_NAME: process.env.APP_NAME || 'Advanced-AI-API',
   MEMORY_MB: parseInt(process.env.MEMORY_LIMIT_MB || 512),
   SELECTION_STRATEGY: process.env.SELECTION_STRATEGY || 'health-aware-round-robin',
@@ -1134,17 +1134,17 @@ function startServer() {
                 <h3>cURL Examples</h3>
 
                 <h4>POST Request (Non-Streaming)</h4>
-                <pre><code>curl -X POST http://localhost:3000/api/chat \\
+                <pre><code>curl -X POST https://mutlimodel-ai-api.onrender.com/api/chat \\
   -H "Content-Type: application/json" \\
   -d '{"prompt": "Write a hello world in Python"}'</code></pre>
 
                 <h4>POST Request (Streaming)</h4>
-                <pre><code>curl -N -X POST http://localhost:3000/api/chat/stream \\
+                <pre><code>curl -N -X POST https://mutlimodel-ai-api.onrender.com/api/chat/stream \\
   -H "Content-Type: application/json" \\
   -d '{"prompt": "Explain async/await"}'</code></pre>
 
                 <h4>GET Request</h4>
-                <pre><code>curl "http://localhost:3000/api/chat?q=What+is+JavaScript"</code></pre>
+                <pre><code>curl "https://mutlimodel-ai-api.onrender.com/api/chat?q=What+is+JavaScript"</code></pre>
 
                 <h3>JavaScript/Fetch Examples</h3>
 
@@ -1183,7 +1183,7 @@ while (true) {
                 <h3>Python Example</h3>
                 <pre><code>import requests
 
-response = requests.post('http://localhost:3000/api/chat', 
+response = requests.post('https://mutlimodel-ai-api.onrender.com/api/chat', 
     json={'prompt': 'Calculate 25 * 37'}
 )
 
@@ -1194,7 +1194,7 @@ print(data['response'])</code></pre>
                 <pre><code>const fetch = require('node-fetch');
 
 async function chat() {
-  const response = await fetch('http://localhost:3000/api/chat', {
+  const response = await fetch('https://mutlimodel-ai-api.onrender.com/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
