@@ -146,14 +146,14 @@ const MODEL_POOL = {
   ],
   reasoning: [
     { id: 'deepseek/deepseek-r1-0528:free', priority: 1, maxTokens: 8192, temperature: 0.7 },
-    { id: 'z-ai/glm-4.5-air:free', priority: 2, maxTokens: 4096, temperature: 0.7 }
+    { id: 'google/gemma-3-27b-it:free', priority: 2, maxTokens: 4096, temperature: 0.7 }
   ],
   creative: [
     { id: 'minimax/minimax-m2:free', priority: 1, maxTokens: 8192, temperature: 0.9 },
-    { id: 'z-ai/glm-4.5-air:free', priority: 2, maxTokens: 4096, temperature: 0.8 }
+    { id: 'google/gemma-3-27b-it:free', priority: 2, maxTokens: 4096, temperature: 0.8 }
   ],
   general: [
-    { id: 'z-ai/glm-4.5-air:free', priority: 1, maxTokens: 4096, temperature: 0.7 },
+    { id: 'google/gemma-3-27b-it:free', priority: 1, maxTokens: 4096, temperature: 0.7 },
     { id: 'deepseek/deepseek-r1-0528:free', priority: 2, maxTokens: 8192, temperature: 0.7 },
     { id: 'minimax/minimax-m2:free', priority: 3, maxTokens: 8192, temperature: 0.7 }
   ]
